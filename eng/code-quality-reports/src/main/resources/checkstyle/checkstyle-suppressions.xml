@@ -112,6 +112,9 @@
   <!-- Don't check for JavaDocPackage in samples or tests -->
   <suppress checks="JavadocPackage" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
+  <!-- Suppress lineLength for samples and tests -->
+  <suppress checks="LineLength" files=".*[/\\](samples|test)[/\\].*\.java"/>
+
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
 
@@ -168,4 +171,7 @@
 
   <!-- InvalidKeyException is not a runtime exception, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5178 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
+  
+  <!-- Suppress lineLength for Storage on Preview 3. https://github.com/Azure/azure-sdk-for-java/issues/5125 -->
+  <suppress checks="LineLength" files=".*[/\\]com[/\\]azure[/\\]storage[/\\]*"/>
 </suppressions>
