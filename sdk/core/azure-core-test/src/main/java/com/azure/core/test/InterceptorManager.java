@@ -22,8 +22,8 @@ import java.util.Objects;
 
 /**
  * A class that keeps track of network calls by either reading the data from an existing test session record or
- * recording the network calls in memory. Test session records are saved or read from: "<i>session-records/{@code
- * testName}.json</i>"
+ * recording the network calls in memory. Test session records are saved or read from: "<i>session-records/
+ * {@code testName}.json</i>"
  *
  * <ul>
  *     <li>If the {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
@@ -79,9 +79,9 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
-     * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
-     * NetworkCallRecord#response()}.
+     * Creates a new InterceptorManager that replays test session records. It takes a set of
+     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a
+     * {@link NetworkCallRecord#response()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
      *
