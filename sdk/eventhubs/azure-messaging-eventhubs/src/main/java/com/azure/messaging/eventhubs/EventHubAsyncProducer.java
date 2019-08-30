@@ -66,7 +66,8 @@ import java.util.stream.Collector;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducer.instantiation#partitionId}
  *
- * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
+ * <p><strong>Publish events to the same partition, grouped together using
+ * {@link SendOptions#partitionKey(String)}.</strong></p>
  * If developers want to push similar events to end up at the same partition, but do not require them to go to a
  * specific partition, they can use {@link SendOptions#partitionKey(String)}.
  * <p>
@@ -122,6 +123,7 @@ public class EventHubAsyncProducer implements Closeable {
 
     /**
      * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
+     *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch() {
@@ -130,6 +132,7 @@ public class EventHubAsyncProducer implements Closeable {
 
     /**
      * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
+     *
      * @param options A set of options used to configure the {@link EventDataBatch}.
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
@@ -164,7 +167,7 @@ public class EventHubAsyncProducer implements Closeable {
     /**
      * Sends a single event to the associated Event Hub. If the size of the single event exceeds the maximum size
      * allowed, an exception will be triggered and the send will fail.
-
+     *
      * <p>
      * For more information regarding the maximum event size allowed, see
      * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
@@ -190,6 +193,7 @@ public class EventHubAsyncProducer implements Closeable {
      * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
      * Limits</a>.
      * </p>
+     *
      * @param event Event to send to the service.
      * @param options The set of options to consider when sending this event.
      *
@@ -206,6 +210,7 @@ public class EventHubAsyncProducer implements Closeable {
      * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
+     *
      * @param events Events to send to the service.
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.
@@ -220,6 +225,7 @@ public class EventHubAsyncProducer implements Closeable {
      * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
+     *
      * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
      *
@@ -235,6 +241,7 @@ public class EventHubAsyncProducer implements Closeable {
      * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
+     *
      * @param events Events to send to the service.
      *
      * @return A {@link Mono} that completes when all events are pushed to the service.
@@ -249,6 +256,7 @@ public class EventHubAsyncProducer implements Closeable {
      * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
+     *
      * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
      *
@@ -263,9 +271,11 @@ public class EventHubAsyncProducer implements Closeable {
 
     /**
      * Sends the batch to the associated Event Hub.
+     *
      * @param batch The batch to send to the service.
      *
      * @return A {@link Mono} that completes when the batch is pushed to the service.
+     *
      * @throws NullPointerException if {@code batch} is {@code null}.
      * @see EventHubAsyncProducer#createBatch()
      * @see EventHubAsyncProducer#createBatch(BatchOptions)
@@ -323,18 +333,20 @@ public class EventHubAsyncProducer implements Closeable {
         if (isPartitionSender) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.partitionKey() cannot be set when an EventHubProducer is created with"
-                    + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to partition '%s'.",
+                    + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to "
+                    + "partition '%s'.",
                 senderOptions.partitionId())));
         } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH)));
+                "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey,
+                MAX_PARTITION_KEY_LENGTH)));
         }
     }
 
     /**
      * Disposes of the {@link EventHubAsyncProducer} by closing the underlying connection to the service.
-     * @throws IOException if the underlying transport could not be closed and its resources could not be
-     *                     disposed.
+     *
+     * @throws IOException if the underlying transport could not be closed and its resources could not be disposed.
      */
     @Override
     public void close() throws IOException {
@@ -352,7 +364,8 @@ public class EventHubAsyncProducer implements Closeable {
      * maxNumberOfBatches}, then the collector throws a {@link AmqpException} with {@link
      * ErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
      */
-    private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
+    private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>,
+        List<EventDataBatch>> {
         private final String partitionKey;
         private final int maxMessageSize;
         private final Integer maxNumberOfBatches;
@@ -388,7 +401,8 @@ public class EventHubAsyncProducer implements Closeable {
                     final String message = String.format(Locale.US,
                         "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches);
 
-                    throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, contextProvider.getErrorContext());
+                    throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
+                        contextProvider.getErrorContext());
                 }
 
                 currentBatch = new EventDataBatch(maxMessageSize, partitionKey, contextProvider);

@@ -112,14 +112,15 @@ public class EventHubClientBuilder {
      * from that Event Hub will result in a connection string that contains the name.
      * </p>
      *
-     * @param connectionString The connection string to use for connecting to the Event Hub instance. It is
-     *         expected that the Event Hub name and the shared access key properties are contained in this connection
-     *         string.
+     * @param connectionString The connection string to use for connecting to the Event Hub instance. It is expected
+     * that the Event Hub name and the shared access key properties are contained in this connection string.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
+     *
      * @throws IllegalArgumentException if {@code connectionString} is null or empty. Or, the {@code connectionString}
-     *         does not contain the "EntityPath" key, which is the name of the Event Hub instance.
-     * @throws AzureException If the shared access signature token credential could not be created using the
-     *         connection string.
+     * does not contain the "EntityPath" key, which is the name of the Event Hub instance.
+     * @throws AzureException If the shared access signature token credential could not be created using the connection
+     * string.
      */
     public EventHubClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
@@ -128,7 +129,8 @@ public class EventHubClientBuilder {
             tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
                 properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e));
+            throw logger.logExceptionAsError(new AzureException("Could not create the "
+                + "EventHubSharedAccessKeyCredential.", e));
         }
 
         return credential(properties.endpoint().getHost(), properties.eventHubName(), tokenCredential);
@@ -138,11 +140,12 @@ public class EventHubClientBuilder {
      * Sets the credential information given a connection string to the Event Hubs namespace and name to a specific
      * Event Hub instance.
      *
-     * @param connectionString The connection string to use for connecting to the Event Hubs namespace; it is
-     *         expected that the shared access key properties are contained in this connection string, but not the Event
-     *         Hub name.
+     * @param connectionString The connection string to use for connecting to the Event Hubs namespace; it is expected
+     * that the shared access key properties are contained in this connection string, but not the Event Hub name.
      * @param eventHubName The name of the Event Hub to connect the client to.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
+     *
      * @throws NullPointerException if {@code connectionString} or {@code eventHubName} is null.
      * @throws IllegalArgumentException if {@code connectionString} or {@code eventHubName} is an empty string.
      *         Or, if the {@code connectionString} contains the Event Hub name.
@@ -154,7 +157,8 @@ public class EventHubClientBuilder {
         Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
 
         if (connectionString.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'connectionString' cannot be an empty string."));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'connectionString' cannot be an empty string."));
         } else if (eventHubName.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
@@ -165,7 +169,8 @@ public class EventHubClientBuilder {
             tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
                 properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new AzureException("Could not create the EventHubSharedAccessKeyCredential.", e));
+            throw logger.logExceptionAsError(new AzureException("Could not create the "
+                + "EventHubSharedAccessKeyCredential.", e));
         }
 
         if (!ImplUtils.isNullOrEmpty(properties.eventHubName()) && !eventHubName.equals(properties.eventHubName())) {
@@ -186,6 +191,7 @@ public class EventHubClientBuilder {
      * {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to configure the {@link EventHubAsyncClient}.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder configuration(Configuration configuration) {
@@ -199,8 +205,9 @@ public class EventHubClientBuilder {
      * @param host The fully qualified host name for the Event Hubs namespace. This is likely to be similar to
      *         <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
      * @param eventHubName The name of the Event Hub to connect the client to.
-     * @param credential The token credential to use for authorization. Access controls may be specified by the
-     *         Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
+     * @param credential The token credential to use for authorization. Access controls may be specified by the Event
+     * Hubs namespace or the requested Event Hub, depending on Azure configuration.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      * @throws IllegalArgumentException if {@code host} or {@code eventHubName} is an empty string.
      * @throws NullPointerException if {@code host}, {@code eventHubName}, {@code credentials} is null.
@@ -224,6 +231,7 @@ public class EventHubClientBuilder {
      * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyConfiguration The proxy configuration to use.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder proxyConfiguration(ProxyConfiguration proxyConfiguration) {
@@ -235,8 +243,8 @@ public class EventHubClientBuilder {
      * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
      * specified, an elastic pool is used.
      *
-     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to
-     *         Event Hubs.
+     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder scheduler(Scheduler scheduler) {
@@ -249,6 +257,7 @@ public class EventHubClientBuilder {
      * TransportType#AMQP}.
      *
      * @param transport The transport type to use.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder transportType(TransportType transport) {
@@ -260,6 +269,7 @@ public class EventHubClientBuilder {
      * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, the default retry options are used.
      *
      * @param retryOptions The retry policy to use.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder retry(RetryOptions retryOptions) {
@@ -287,9 +297,10 @@ public class EventHubClientBuilder {
      * </ul>
      *
      * @return A new {@link EventHubAsyncClient} instance with all the configured options.
+     *
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
-     *         #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is
-     *         specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
+     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubAsyncClient buildAsyncClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
@@ -300,8 +311,8 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Creates a new {@link EventHubClient} based on options set on this builder. Every time {@code buildClient()}
-     * is invoked, a new instance of {@link EventHubClient} is created.
+     * Creates a new {@link EventHubClient} based on options set on this builder. Every time {@code buildClient()} is
+     * invoked, a new instance of {@link EventHubClient} is created.
      *
      * <p>
      * The following options are used if ones are not specified in the builder:
@@ -319,9 +330,10 @@ public class EventHubClientBuilder {
      * </ul>
      *
      * @return A new {@link EventHubClient} instance with all the configured options.
+     *
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
-     *         #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is
-     *         specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
+     * but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubClient buildClient() {
         final ConnectionOptions connectionOptions = getConnectionOptions();
@@ -337,8 +349,8 @@ public class EventHubClientBuilder {
      *
      * Sets the consumer group name from which the {@link EventProcessor} should consume events from.
      *
-     * @param consumerGroupName The consumer group name this {@link EventProcessor} should consume events
-     *         from.
+     * @param consumerGroupName The consumer group name this {@link EventProcessor} should consume events from.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder consumerGroupName(String consumerGroupName) {
@@ -353,6 +365,7 @@ public class EventHubClientBuilder {
      * {@link EventPosition#earliest()} will be used as the initial event position to start consuming events.
      *
      * @param initialEventPosition The initial event position.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder initialEventPosition(EventPosition initialEventPosition) {
@@ -363,10 +376,11 @@ public class EventHubClientBuilder {
     /**
      * This property must be set when building an {@link EventProcessor}.
      *
-     * Sets the {@link PartitionManager} the {@link EventProcessor} will use for storing partition
-     * ownership and checkpoint information.
+     * Sets the {@link PartitionManager} the {@link EventProcessor} will use for storing partition ownership and
+     * checkpoint information.
      *
      * @param partitionManager Implementation of {@link PartitionManager}.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder partitionManager(PartitionManager partitionManager) {
@@ -382,6 +396,7 @@ public class EventHubClientBuilder {
      * Sets the partition processor factory for creating new instance(s) of {@link PartitionProcessor}.
      *
      * @param partitionProcessorFactory The factory that creates new processor for each partition.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder partitionProcessorFactory(PartitionProcessorFactory partitionProcessorFactory) {
@@ -390,8 +405,8 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This will create a new {@link EventProcessor} configured with the options set in this builder. Each call
-     * to this method will return a new instance of {@link EventProcessor}.
+     * This will create a new {@link EventProcessor} configured with the options set in this builder. Each call to this
+     * method will return a new instance of {@link EventProcessor}.
      *
      * <p>
      * A new instance of {@link EventHubAsyncClient} will be created with configured options by calling the {@link
@@ -399,9 +414,9 @@ public class EventHubClientBuilder {
      * </p>
      *
      * <p>
-     * If the {@link #initialEventPosition(EventPosition) initial event position} is not set, all partitions processed by
-     * this {@link EventProcessor} will start processing from {@link EventPosition#earliest() earliest}
-     * available event in the respective partitions.
+     * If the {@link #initialEventPosition(EventPosition) initial event position} is not set, all partitions processed
+     * by this {@link EventProcessor} will start processing from {@link EventPosition#earliest() earliest} available
+     * event in the respective partitions.
      * </p>
      *
      * @return A new instance of {@link EventProcessor}.
@@ -439,7 +454,8 @@ public class EventHubClientBuilder {
         // is not AMQP_WEB_SOCKETS.
         if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
             && transport != TransportType.AMQP_WEB_SOCKETS) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Cannot use a proxy when TransportType is not AMQP."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Cannot use a proxy when TransportType is "
+                + "not AMQP."));
         }
 
         if (proxyConfiguration == null) {

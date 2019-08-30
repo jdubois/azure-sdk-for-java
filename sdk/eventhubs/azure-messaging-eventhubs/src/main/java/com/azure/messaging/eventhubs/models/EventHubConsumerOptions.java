@@ -60,9 +60,10 @@ public class EventHubConsumerOptions implements Cloneable {
      * Sets an optional text-based identifier label to assign to an event consumer.
      *
      * @param identifier The receiver name.
+     *
      * @return The updated {@link EventHubConsumerOptions} object.
-     * @throws IllegalArgumentException if {@code identifier} is greater than {@link
-     *         #MAXIMUM_IDENTIFIER_LENGTH}.
+     *
+     * @throws IllegalArgumentException if {@code identifier} is greater than {@link #MAXIMUM_IDENTIFIER_LENGTH}.
      */
     public EventHubConsumerOptions identifier(String identifier) {
         if (!ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
@@ -87,14 +88,17 @@ public class EventHubConsumerOptions implements Cloneable {
      * operation.
      * </p>
      *
-     * @param priority The priority associated with an exclusive consumer; for a non-exclusive consumer, this
-     *         value should be {@code null}.
+     * @param priority The priority associated with an exclusive consumer; for a non-exclusive consumer, this value
+     * should be {@code null}.
+     *
      * @return The updated {@link EventHubConsumerOptions} object.
+     *
      * @throws IllegalArgumentException if {@code priority} is not {@code null} and is less than 0.
      */
     public EventHubConsumerOptions ownerLevel(Long priority) {
         if (priority != null && priority < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'priority' cannot be a negative value. "
+                + "Please specify a zero or positive long value."));
         }
 
         this.ownerLevel = priority;
@@ -106,6 +110,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * configured on the associated {@link EventHubAsyncClient} is used.
      *
      * @param retry The retry policy to use when receiving events.
+     *
      * @return The updated {@link EventHubConsumerOptions} object.
      */
     public EventHubConsumerOptions retry(RetryOptions retry) {
@@ -118,9 +123,11 @@ public class EventHubConsumerOptions implements Cloneable {
      * locally without regard to whether a receive operation is currently active.
      *
      * @param prefetchCount The amount of events to queue locally.
+     *
      * @return The updated {@link EventHubConsumerOptions} object.
-     * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link
-     *         #MINIMUM_PREFETCH_COUNT} or greater than {@link #MAXIMUM_PREFETCH_COUNT}.
+     *
+     * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link #MINIMUM_PREFETCH_COUNT} or
+     * greater than {@link #MAXIMUM_PREFETCH_COUNT}.
      */
     public EventHubConsumerOptions prefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
@@ -142,6 +149,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * associated {@link EventHubAsyncClient} is used.
      *
      * @param scheduler The scheduler for receiving events.
+     *
      * @return The updated EventHubClientBuilder object.
      */
     public EventHubConsumerOptions scheduler(Scheduler scheduler) {
@@ -195,7 +203,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * locally without regard to whether a receive operation is currently active.
      *
      * @return The prefetch count receiver will receive and queue locally regardless of whether or not a receive
-     *         operation is active.
+     * operation is active.
      */
     public int prefetchCount() {
         return prefetchCount;

@@ -31,9 +31,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *
  * <p>
  * The shared access key can be obtained by creating a <i>shared access policy</i> for the Event Hubs namespace or for a
- * specific Event Hub instance. See
- * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature#shared-access-authorization-policies">
+ * specific Event Hub instance.
+ * <pre>
+ * See <a href="https://docs.microsoft.com/en-us/azure/event-hubs/
+ * authorize-access-shared-access-signature#shared-access-authorization-policies">
  * Shared access authorization policies</a> for more information.
+ * </pre>
  * </p>
  *
  * @see <a href="https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature">Authorize
@@ -92,6 +95,7 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
      * namespace or a specific Event Hub instance.
      *
      * @param scopes The name of the resource or token audience to obtain a token for.
+     *
      * @return A Mono that completes and returns the shared access signature.
      * @throws IllegalArgumentException if {@code scopes} does not contain a single value, which is the token
      *     audience.
@@ -99,7 +103,8 @@ public class EventHubSharedAccessKeyCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(String... scopes) {
         if (scopes.length != 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'scopes' should only contain a single argument that is the token audience or resource name."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'scopes' should only contain a single "
+                + "argument that is the token audience or resource name."));
         }
 
         return Mono.fromCallable(() -> generateSharedAccessSignature(scopes[0]));
