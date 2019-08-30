@@ -811,8 +811,8 @@ public final class SecretAsyncClient {
      * <p>It is possible to get the Secret with value of all the versions from this information. Convert the {@link
      * Flux}
      * containing {@link SecretBase base secret} to {@link Flux} containing {@link Secret secret} using {@link
-     * SecretAsyncClient#getSecret(SecretBase baseSecret)} within {@link Flux#flatMap(Function)}.</p> {@codesnippet
-     * com.azure.keyvault.secrets.secretclient.listSecretVersions#string}
+     * SecretAsyncClient#getSecret(SecretBase baseSecret)} within {@link Flux#flatMap(Function)}.</p>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecretVersions#string}
      *
      * @param name The name of the secret.
      *
