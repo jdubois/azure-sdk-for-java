@@ -66,7 +66,8 @@ public final class PlaybackClient implements HttpClient {
             logger.warning("NOT FOUND - Method: {} URL: {}", incomingMethod, incomingUrl);
             logger.warning("Records requested: {}.", count);
 
-            return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
+            return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod
+                + " " + incomingUrl));
         }
 
         if (networkCallRecord.exception() != null) {
