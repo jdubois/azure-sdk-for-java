@@ -28,6 +28,7 @@ public final class UrlBuilder {
      * Set the scheme/protocol that will be used to build the final URL.
      *
      * @param scheme The scheme/protocol that will be used to build the final URL.
+     *
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder scheme(String scheme) {
@@ -52,6 +53,7 @@ public final class UrlBuilder {
      * Set the host that will be used to build the final URL.
      *
      * @param host The host that will be used to build the final URL.
+     *
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder host(String host) {
@@ -76,6 +78,7 @@ public final class UrlBuilder {
      * Set the port that will be used to build the final URL.
      *
      * @param port The port that will be used to build the final URL.
+     *
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder port(String port) {
@@ -91,6 +94,7 @@ public final class UrlBuilder {
      * Set the port that will be used to build the final URL.
      *
      * @param port The port that will be used to build the final URL.
+     *
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder port(int port) {
@@ -110,6 +114,7 @@ public final class UrlBuilder {
      * Set the path that will be used to build the final URL.
      *
      * @param path The path that will be used to build the final URL.
+     *
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder path(String path) {
@@ -135,6 +140,7 @@ public final class UrlBuilder {
      *
      * @param queryParameterName The name of the query parameter.
      * @param queryParameterEncodedValue The encoded value of the query parameter.
+     *
      * @return The provided query parameter name and encoded value to query string for the final URL.
      */
     public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
@@ -146,6 +152,7 @@ public final class UrlBuilder {
      * Set the query that will be used to build the final URL.
      *
      * @param query The query that will be used to build the final URL.
+     *
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder query(String query) {
@@ -241,6 +248,7 @@ public final class UrlBuilder {
      * Get the URL that is being built.
      *
      * @return The URL that is being built.
+     *
      * @throws MalformedURLException if the URL is not fully formed.
      */
     public URL toURL() throws MalformedURLException {
@@ -291,6 +299,7 @@ public final class UrlBuilder {
      * Parse a UrlBuilder from the provided URL string.
      *
      * @param url The string to parse.
+     *
      * @return The UrlBuilder that was parsed from the string.
      */
     public static UrlBuilder parse(String url) {
@@ -303,6 +312,7 @@ public final class UrlBuilder {
      * Parse a UrlBuilder from the provided URL object.
      *
      * @param url The URL object to parse.
+     *
      * @return The UrlBuilder that was parsed from the URL object.
      */
     public static UrlBuilder parse(URL url) {

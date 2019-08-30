@@ -103,7 +103,8 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                 pollUrl = data.originalResourceUrl;
             }
         } else {
-            throw logger.logExceptionAsError(new IllegalStateException("Polling is completed and did not succeed. Cannot create a polling request."));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Polling is completed and did not succeed. Cannot create a polling request."));
         }
 
         return new HttpRequest(HttpMethod.GET, pollUrl);
@@ -112,38 +113,37 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     @Override
     public Mono<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
         return ensureExpectedStatus(httpPollResponse)
-                .flatMap(response -> {
-                    updateDelayInMillisecondsFrom(response);
-                    Mono<HttpResponse> result;
-                    if (!data.pollingCompleted) {
-                        final HttpResponse bufferedHttpPollResponse = response.buffer();
-                        result = bufferedHttpPollResponse.bodyAsString()
-                                .map(bodyString -> {
-                                    AsyncOperationResource operationResource = null;
-                                    try {
-                                        operationResource = deserialize(bodyString, AsyncOperationResource.class);
-                                    } catch (IOException ignored) { }
-                                    //
-                                    if (operationResource == null || operationResource.status() == null) {
-                                        throw logger.logExceptionAsError(new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null));
-                                    } else {
-                                        final String status = operationResource.status();
-                                        setStatus(status);
+            .flatMap(response -> {
+                updateDelayInMillisecondsFrom(response);
+                Mono<HttpResponse> result;
+                if (!data.pollingCompleted) {
+                    final HttpResponse bufferedHttpPollResponse = response.buffer();
+                    result = bufferedHttpPollResponse.bodyAsString()
+                        .map(bodyString -> {
+                            AsyncOperationResource operationResource = null;
+                            try {
+                                operationResource = deserialize(bodyString, AsyncOperationResource.class);
+                            } catch (IOException ignored) {
+                            }
+                            //
+                            if (operationResource == null || operationResource.status() == null) {
+                                throw logger.logExceptionAsError(new CloudException(
+                                    "The polling response does not contain a valid body",
+                                    bufferedHttpPollResponse,
+                                    null));
+                            } else {
+                                final String status = operationResource.status();
+                                setStatus(status);
 
-                                        data.pollingCompleted = OperationState.isCompleted(status);
-                                        if (data.pollingCompleted) {
-                                            data.pollingSucceeded = OperationState.SUCCEEDED.equalsIgnoreCase(status);
-                                            clearDelayInMilliseconds();
+                                data.pollingCompleted = OperationState.isCompleted(status);
+                                if (data.pollingCompleted) {
+                                    data.pollingSucceeded = OperationState.SUCCEEDED.equalsIgnoreCase(status);
+                                    clearDelayInMilliseconds();
 
-                                            if (!data.pollingSucceeded) {
-                                                throw logger.logExceptionAsError(new CloudException("Async operation failed with provisioning state: " + status, bufferedHttpPollResponse));
-                                            }
-
-                                            if (operationResource.id() != null) {
-                                                data.gotResourceResponse = true;
-                                            }
-                                        }
-                                        return bufferedHttpPollResponse;
+                                    if (!data.pollingSucceeded) {
+                                        throw logger.logExceptionAsError(new CloudException(
+                                            "Async operation failed with provisioning state: " + status,
+                                            bufferedHttpPollResponse));
                                     }
                                 });
                     } else {
