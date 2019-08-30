@@ -56,7 +56,8 @@ public abstract class SecretClientTestBase extends TestBase {
         TokenCredential credential;
 
         if (interceptorManager.isPlaybackMode()) {
-            credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
+            credential = resource -> Mono.just(new AccessToken("Some fake token",
+                OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
         } else {
             credential = new DefaultAzureCredentialBuilder().build();
         }
@@ -64,7 +65,8 @@ public abstract class SecretClientTestBase extends TestBase {
         HttpClient httpClient;
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,  ConfigurationManager.getConfiguration().clone()));
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
+            ConfigurationManager.getConfiguration().clone()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         policies.add(new BearerTokenAuthenticationPolicy(credential, SecretAsyncClient.KEY_VAULT_SCOPE));
@@ -119,7 +121,8 @@ public abstract class SecretClientTestBase extends TestBase {
         testRunner.accept(secret);
     }
 
-    @Test public abstract void setSecretNull();
+    @Test
+    public abstract void setSecretNull();
 
 
     @Test
@@ -131,12 +134,12 @@ public abstract class SecretClientTestBase extends TestBase {
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
         final Secret originalSecret = new Secret("testSecretUpdate", "testSecretVal")
-                .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .tags(tags);
+            .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+            .tags(tags);
 
         final Secret updatedSecret = new Secret("testSecretUpdate", "testSecretVal")
-                .expires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .tags(tags);
+            .expires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+            .tags(tags);
 
         testRunner.accept(originalSecret, updatedSecret);
     }
@@ -150,11 +153,11 @@ public abstract class SecretClientTestBase extends TestBase {
         final Map<String, String> tags = new HashMap<>();
 
         final Secret originalSecret = new Secret("testUpdateOfDisabledSecret", "testSecretUpdateDisabledVal")
-                .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .enabled(false);
+            .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+            .enabled(false);
 
         final Secret updatedSecret = new Secret("testUpdateOfDisabledSecret", "testSecretUpdateDisabledVal")
-                .expires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .expires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(originalSecret, updatedSecret);
     }
@@ -164,7 +167,7 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void getSecretRunner(Consumer<Secret> testRunner) {
         final Secret originalSecret = new Secret("testSecretGet", "testSecretGetVal")
-                .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(originalSecret);
     }
@@ -174,10 +177,10 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void getSecretSpecificVersionRunner(BiConsumer<Secret, Secret> testRunner) {
         final Secret secret = new Secret("testSecretGetVersion", "testSecretGetVersionVal")
-                .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         final Secret secretWithNewVal = new Secret("testSecretGetVersion", "newVal")
-                .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(secret, secretWithNewVal);
     }
@@ -190,7 +193,7 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void deleteSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToDelete = new Secret("testSecretDelete", "testSecretDeleteVal")
-                .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(secretToDelete);
     }
@@ -204,7 +207,7 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void getDeletedSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToDeleteAndGet = new Secret("testSecretGetDeleted", "testSecretGetDeleteVal")
-                .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         testRunner.accept(secretToDeleteAndGet);
     }
 
@@ -216,7 +219,7 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void recoverDeletedSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToDeleteAndRecover = new Secret("testSecretRecover", "testSecretRecoverVal")
-                .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         testRunner.accept(secretToDeleteAndRecover);
     }
 
@@ -228,7 +231,7 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void backupSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToBackup = new Secret("testSecretBackup", "testSecretBackupVal")
-                .expires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .expires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         testRunner.accept(secretToBackup);
     }
 
@@ -240,7 +243,7 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void restoreSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToBackupAndRestore = new Secret("testSecretRestore", "testSecretRestoreVal")
-                .expires(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .expires(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         testRunner.accept(secretToBackupAndRestore);
     }
 
@@ -257,8 +260,8 @@ public abstract class SecretClientTestBase extends TestBase {
         for (int i = 0; i < 30; i++) {
             secretName = "listSecret" + i;
             secretVal = "listSecretVal" + i;
-            Secret secret =  new Secret(secretName, secretVal)
-                    .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            Secret secret = new Secret(secretName, secretVal)
+                .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
             secrets.put(secretName, secret);
         }
         testRunner.accept(secrets);
@@ -275,7 +278,7 @@ public abstract class SecretClientTestBase extends TestBase {
             secretName = "listDeletedSecretsTest" + i;
             secretVal = "listDeletedSecretVal" + i;
             secrets.put(secretName, new Secret(secretName, secretVal)
-                    .expires(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .expires(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         }
         testRunner.accept(secrets);
@@ -293,13 +296,14 @@ public abstract class SecretClientTestBase extends TestBase {
             secretName = "listSecretVersion";
             secretVal = "listSecretVersionVal" + i;
             secrets.add(new Secret(secretName, secretVal)
-                    .expires(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .expires(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC)));
         }
         testRunner.accept(secrets);
     }
 
     /**
-     * Helper method to verify that the Response matches what was expected. This method assumes a response status of 200.
+     * Helper method to verify that the Response matches what was expected. This method assumes a response status of
+     * 200.
      *
      * @param expected Secret expected to be returned by the service
      * @param response Response returned by the service, the body should contain a Secret
@@ -337,8 +341,8 @@ public abstract class SecretClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+            ? "http://localhost:8080"
+            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }
@@ -347,7 +351,9 @@ public abstract class SecretClientTestBase extends TestBase {
         assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Runnable exceptionThrower,
+                                    Class<? extends HttpResponseException> expectedExceptionType,
+                                    int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
@@ -366,7 +372,8 @@ public abstract class SecretClientTestBase extends TestBase {
         assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
+                                    int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).response().statusCode());
     }
